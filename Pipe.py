@@ -27,9 +27,9 @@ class Pipe():
         self.set_dimensions()
         self.speed = 5
 
-    def draw(self, win):
-        win.blit(self.top_pipe, (self.x, self.top_y - self.height))
-        win.blit(self.bottom_pipe, (self.x, self.bottom_y))
+    def draw(self, screen):
+        screen.blit(self.top_pipe, (self.x, self.top_y - self.height))
+        screen.blit(self.bottom_pipe, (self.x, self.bottom_y))
 
     def set_dimensions(self):
         half = dheight/2
