@@ -5,19 +5,27 @@ pygame.init()
 
 STATIC_PATH = 'static'
 SCREEN = pygame.display.set_mode((640, 480))
-
-BACKGROUND = pygame.image.load('static/background.png')
-
+BACKGROUND = pygame.image.load('static/background.png').convert()
 SCREEN.blit(BACKGROUND, [0, 0])
-
-print(SCREEN)
-print(BACKGROUND)
-
-pygame.display.update()
-pipe = Pipe()
-pipe.draw(SCREEN)
-
 pygame.display.update()
 
+x_difference = 200
+clock = pygame.time.Clock()
+fps = 60
 
-pygame.time.delay(5000)
+run = True
+pipes = [Pipe(0), Pipe(x_difference), Pipe(x_difference*2)]
+while True:
+    SCREEN.blit(BACKGROUND, [0, 0])
+    for pipe in pipes:
+        pipe.move()
+        pipe.draw(SCREEN)
+        if pipe.x <= 0:
+            pipes = pipes[1:]
+            pipes.append(Pipe(0))
+
+    pygame.display.update()
+    clock.tick(fps)
+
+
+pygame.time.delay(1000)
