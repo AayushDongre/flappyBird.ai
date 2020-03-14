@@ -2,9 +2,11 @@ import pygame
 from Pipe import Pipe
 
 pygame.init()
+dwidth = 640
+dheight = 480
 
 STATIC_PATH = 'static'
-SCREEN = pygame.display.set_mode((640, 480))
+SCREEN = pygame.display.set_mode((dwidth, dheight))
 BACKGROUND = pygame.image.load('static/background.png').convert()
 SCREEN.blit(BACKGROUND, [0, 0])
 pygame.display.update()
