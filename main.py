@@ -78,10 +78,12 @@ while True:
             generation.remove(player)
 
         if player.y > nextpipe.bottom_y and player.x > nextpipe.x and player.x < nextpipe.x + nextpipe.width:
+            player.fitness += abs(nextpipe.centery - player.y)
             dead.append(player)
             generation.remove(player)
 
         if player.y < nextpipe.top_y and player.x > nextpipe.x and player.x < nextpipe.x + nextpipe.width:
+            player.fitness += abs(nextpipe.centery - player.y)
             dead.append(player)
             generation.remove(player)
     
