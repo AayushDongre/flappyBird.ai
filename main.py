@@ -118,6 +118,7 @@ while True:
 
     #On generation end
     if len(generation) == 0:
+        score = 0
         new_gen_weights.clear()
         for i in range(generation_size//2):
             new_weights = crossover() 
@@ -127,8 +128,8 @@ while True:
         for i in new_gen_weights:
             generation.append(Player(inital_weights=i))
             
-        if generation_number%3 == 0:
-            best_player.model.save(os.path.join(models_dir, f'generation-{generation_number}.h5'))
+        if generation_number%5 == 0:
+            best_player.model.save(os.path.join(models_dir, f'generation-{generation_number}_fitness:{round(best_player.fitness)}.h5'))
 
         generation_number += 1
         reset()
