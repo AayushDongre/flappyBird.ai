@@ -1,6 +1,7 @@
 import pygame
 from keras.models import Sequential
 from keras.layers import Dense, Activation
+import random
 import numpy as np
 
 class Player:
@@ -28,7 +29,7 @@ class Player:
             # print('using new weights')
             self.model.set_weights(inital_weights)
         self.model.compile(loss='mse',
-              optimizer='adam',
+              optimizer='RMSprop',
               metrics=['accuracy'])
 
 

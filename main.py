@@ -52,6 +52,7 @@ def crossover():
  
     #if new chromosome does better, use it, else use previous best chromosome
     parent1 = dead[0] if dead[0].fitness > best_player.fitness else best_player
+    # parent1 = dead[0]
     parent2 = dead[1] if dead[1].fitness > best_player.fitness else best_player
 
     new_weight1 = parent1.model.get_weights()
@@ -67,7 +68,7 @@ def mutate(weights):
     for i in range(len(weights)):
         for j in range(len(weights[i])):
             if random.uniform(0, 1) > 1 - mutation_ratio:
-                noise = random.uniform(-0.5, 0.5)
+                noise = random.uniform(-0.7, 0.7)
                 weights[i][j] += noise
     return weights
 
@@ -114,7 +115,7 @@ while True:
     
         #If successfully crossed a pipe, increase fitness
         if player.x > nextpipe.x + nextpipe.width:
-            player.fitness += 1
+            player.fitness += 3
 
     #On generation end
     if len(generation) == 0:
@@ -127,13 +128,17 @@ while True:
         #Populate new generation
         for i in new_gen_weights:
             generation.append(Player(inital_weights=i))
-            
+
+        replace = random.randint(0, generation_size)-1
+        generation[replace] = best_player
+        generation[replace].fitness = 0
+        
         if generation_number%5 == 0:
             best_player.model.save(os.path.join(models_dir, f'generation-{generation_number}_fitness:{round(best_player.fitness)}.h5'))
 
         generation_number += 1
         reset()
-        print(f'Generation:{generation_number}, Best fitness={dead[0].fitness}')
+        print(f'Generation:{generation_number}, Best fitness={dead[0].fitness}, Score={score}')
 
         if dead[0].fitness > best_player.fitness:
             best_player = dead[0]
