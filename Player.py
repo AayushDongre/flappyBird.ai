@@ -4,7 +4,7 @@ from keras.layers import Dense, Activation
 import numpy as np
 
 class Player:
-    def __init__(self):
+    def __init__(self, inital_weights=False ):
         self.images = [pygame.image.load(f'static/bird{i}.png').convert() for i in range(3)]
         self.image = self.images[0]
         self.x = 50
@@ -15,16 +15,22 @@ class Player:
         self.ticks = 0
 
         self.fitness = 0
-        
+
         self.model = Sequential()
-        self.model.add(Dense(5, input_shape=(4, )))
+        self.model.add(Dense(3, input_shape=(3, )))
+        self.model.add(Activation('relu'))
+        self.model.add(Dense(7, input_shape=(3, )))
         self.model.add(Activation('relu'))
         self.model.add(Dense(1))
         self.model.add(Activation('sigmoid'))
-        self.model.compile(loss='binary_crossentropy',
-              optimizer='rmsprop',
+        # print(self.model.get_weights())
+        if not inital_weights == False:
+            # print('using new weights')
+            self.model.set_weights(inital_weights)
+        self.model.compile(loss='mse',
+              optimizer='adam',
               metrics=['accuracy'])
-        print(self.model.get_weights())
+
 
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
@@ -37,9 +43,10 @@ class Player:
 
     def move(self, nextpipe):
         self.ticks += 1
+        self.fitness += 0.1
         distance = self.velocity*self.ticks + 1.5*self.ticks**2
-        result = self.model.predict(np.atleast_2d([self.y, nextpipe.x, nextpipe.centery, nextpipe.difference]))[0][0]
-
+        result = self.model.predict(np.atleast_2d([self.y, nextpipe.x, nextpipe.centery]))[0][0]
+        # print(result)
         if result > .50:
             self.jump()
 

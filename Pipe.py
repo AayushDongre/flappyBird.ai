@@ -34,7 +34,7 @@ class Pipe():
     def set_dimensions(self):
         half = dheight/2
         self.centery = randint(half - 140, half + 140)
-        self.difference = randint(60, 150)
+        self.difference = randint(150, 170)
         self.top_y = self.centery - self.difference/2
         self.bottom_y = self.centery + self.difference/2
 
