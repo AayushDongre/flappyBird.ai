@@ -1,4 +1,7 @@
 import pygame
+from keras.models import Sequential
+from keras.layers import Dense, Activation
+import numpy as np
 
 class Player:
     def __init__(self):
@@ -11,22 +14,38 @@ class Player:
         self.gravity = 6
         self.ticks = 0
 
+        self.model = Sequential()
+        self.model.add(Dense(5, input_shape=(4, )))
+        self.model.add(Activation('relu'))
+        self.model.add(Dense(1))
+        self.model.add(Activation('sigmoid'))
+        self.model.compile(loss='binary_crossentropy',
+              optimizer='rmsprop',
+              metrics=['accuracy'])
+        print(self.model.get_weights())
+
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
-        self.index = (self.index + 1)%3
+        self.index = (self.index + 1) % 3
         self.image = self.images[self.index]
 
     def jump(self):
         self.velocity = -10
         self.ticks = 0
 
-
-    def move(self):
+    def move(self, nextpipe):
         self.ticks += 1
         distance = self.velocity*self.ticks + 1.5*self.ticks**2
+        result = self.model.predict(np.atleast_2d([self.y, nextpipe.x, nextpipe.centery, nextpipe.difference]))[0][0]
+
+        if result > .50:
+            self.jump()
 
         if distance >= 6:
             distance = 6
         if distance < 0:
             distance -= 5
+        if self.y <= 5 :
+            self.velocity = 0
+
         self.y = self.y + distance
