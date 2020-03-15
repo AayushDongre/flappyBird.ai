@@ -35,7 +35,7 @@ for i in range(generation_size):
 def crossover():
     dead.sort(key=lambda x: x.fitness, reverse=True)
  
-    parent1 = dead[0]
+    parent1 = dead[0] if dead[0].fitness > best_player.fitness else best_player
     parent2 = dead[1] if dead[1].fitness > best_player.fitness else best_player
 
     new_weight1 = parent1.model.get_weights()
@@ -78,12 +78,12 @@ while True:
             generation.remove(player)
 
         if player.y > nextpipe.bottom_y and player.x > nextpipe.x and player.x < nextpipe.x + nextpipe.width:
-            player.fitness += abs(nextpipe.centery - player.y)
+            player.fitness += (1 - abs(nextpipe.centery - player.y)/nextpipe.centery)
             dead.append(player)
             generation.remove(player)
 
         if player.y < nextpipe.top_y and player.x > nextpipe.x and player.x < nextpipe.x + nextpipe.width:
-            player.fitness += abs(nextpipe.centery - player.y)
+            player.fitness += (1 - abs(nextpipe.centery - player.y)/nextpipe.centery)
             dead.append(player)
             generation.remove(player)
     
@@ -109,7 +109,6 @@ while True:
 
         dead.clear()
         new_gen_weights.clear()
-        print(len(new_gen_weights), len(dead), len(generation))
     
 
 
