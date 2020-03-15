@@ -17,7 +17,7 @@ class Player:
         self.fitness = 0
 
         self.model = Sequential()
-        self.model.add(Dense(3, input_shape=(3, )))
+        self.model.add(Dense(3, input_shape=(4, )))
         self.model.add(Activation('relu'))
         self.model.add(Dense(7, input_shape=(3, )))
         self.model.add(Activation('relu'))
@@ -45,7 +45,7 @@ class Player:
         self.ticks += 1
         self.fitness += 0.1
         distance = self.velocity*self.ticks + 1.5*self.ticks**2
-        result = self.model.predict(np.atleast_2d([self.y, nextpipe.x, nextpipe.centery]))[0][0]
+        result = self.model.predict(np.atleast_2d([self.y, nextpipe.x, nextpipe.centery, nextpipe.difference]))[0][0]
         # print(result)
         if result > .50:
             self.jump()
