@@ -46,6 +46,8 @@ text = font.render(f'{score}', True, (255, 255, 255), (0, 0, 0))
 for i in range(generation_size):
     generation.append(Player())
 
+
+
 def crossover():
     #sort chromosomes according to their fitnesses
     dead.sort(key=lambda x: x.fitness, reverse=True)
@@ -63,12 +65,14 @@ def crossover():
 
     return np.asarray([new_weight1, new_weight2])
 
+
+
 #Mutate random genes
 def mutate(weights):
     for i in range(len(weights)):
         for j in range(len(weights[i])):
             if random.uniform(0, 1) > 1 - mutation_ratio:
-                noise = random.uniform(-0.7, 0.7)
+                noise = random.uniform(-0.4, 0.4)
                 weights[i][j] += noise
     return weights
 
@@ -76,6 +80,8 @@ def mutate(weights):
 def reset():
     pipes.clear()
     [pipes.append(i) for i in [Pipe(0), Pipe(x_difference), Pipe(x_difference*2)]]
+
+
 
 while True:
     SCREEN.blit(BACKGROUND, [0, 0])
@@ -119,7 +125,6 @@ while True:
 
     #On generation end
     if len(generation) == 0:
-        score = 0
         new_gen_weights.clear()
         for i in range(generation_size//2):
             new_weights = crossover() 
@@ -138,9 +143,10 @@ while True:
         generation[replace] = best_player
         generation[replace].fitness = 0
         
+        print(f'Generation:{generation_number}, Best fitness={dead[0].fitness}, Score={score}')
         generation_number += 1
         reset()
-        print(f'Generation:{generation_number}, Best fitness={dead[0].fitness}, Score={score}')
+        score = 0
 
         if dead[0].fitness > best_player.fitness:
             best_player = dead[0]
