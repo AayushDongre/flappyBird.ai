@@ -18,9 +18,11 @@ fps = 60
 generation_size = 10
 
 run = True
-players = []
+generation = []
+dead = []
+
 for i in range(generation_size):
-    players.append(Player())
+    generation.append(Player())
 
 pipes = [Pipe(0), Pipe(x_difference), Pipe(x_difference*2)]
 while True:
@@ -34,18 +36,22 @@ while True:
 
     nextpipe = pipes[0]
 
-    for player in players:
+    for player in generation:
         player.move(nextpipe)
         player.draw(SCREEN)
 
         if player.y > dheight:
-            players.remove(player)
+            dead.append(player)
+            generation.remove(player)
 
         if player.y > nextpipe.bottom_y and player.x > nextpipe.x:
-            players.remove(player)
+            dead.append(player)
+            generation.remove(player)
 
         if player.y < nextpipe.top_y and player.x > nextpipe.x:
-            players.remove(player)
+            dead.append(player)
+            generation.remove(player)
+    
 
     pygame.display.update()
     clock.tick(fps)

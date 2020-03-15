@@ -14,6 +14,8 @@ class Player:
         self.gravity = 6
         self.ticks = 0
 
+        self.fitness = 0
+        
         self.model = Sequential()
         self.model.add(Dense(5, input_shape=(4, )))
         self.model.add(Activation('relu'))
