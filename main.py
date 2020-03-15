@@ -129,13 +129,15 @@ while True:
         for i in new_gen_weights:
             generation.append(Player(inital_weights=i))
 
-        replace = random.randint(0, generation_size)-1
-        generation[replace] = best_player
-        generation[replace].fitness = 0
+
         
         if generation_number%5 == 0:
             best_player.model.save(os.path.join(models_dir, f'generation-{generation_number}_fitness:{round(best_player.fitness)}.h5'))
 
+        replace = random.randint(0, generation_size)-1
+        generation[replace] = best_player
+        generation[replace].fitness = 0
+        
         generation_number += 1
         reset()
         print(f'Generation:{generation_number}, Best fitness={dead[0].fitness}, Score={score}')
